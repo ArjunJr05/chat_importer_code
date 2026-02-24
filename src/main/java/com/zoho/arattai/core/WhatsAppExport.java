@@ -20,10 +20,9 @@ import com.zoho.arattai.core.Message.MessageType;
  * <pre>{@code
  * WhatsAppExport export = WhatsAppChatParser.parse("/path/to/export.zip");
  * System.out.println("Chat: " + export.getChatName());
- * export.printCategorySummary();
  *
- * for (AudioMessage audio : export.getAudioMessages()) {
- *     System.out.println(audio.getAudioName() + " – " + audio.getAudioDuration());
+ * for (Message msg : export.getAllMessages()) {
+ *     System.out.println(msg.sender + " : " + msg.messageType);
  * }
  * }</pre>
  *

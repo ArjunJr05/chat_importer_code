@@ -14,7 +14,7 @@ import com.zoho.arattai.core.Message;
  * {@link StickerMessage} for the sticker-specific sub-type).
  *
  * <p>
- * Pixel dimensions ({@link #getImageWidth()} / {@link #getImageHeight()}) are
+ * Pixel dimensions ({@link #getWidth()} / {@link #getHeight()}) are
  * extracted at parse time by decoding the image via
  * {@code javax.imageio.ImageIO}
  * directly from the ZIP entry stream. If decoding fails for any reason
