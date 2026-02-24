@@ -11,7 +11,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.zoho.arattai.Message.*;
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -117,10 +117,10 @@ public class WhatsAppChatParser {
             return null;
         String sender = m.group(2).trim(), content = m.group(3);
         Date timestamp = parseTimestamp(m.group(1));
-        MessageType type = classifyMessage(content);
+        Type type = classifyMessage(content);
         switch (type) {
             case TEXT:
-                return new TextMessage(content, sender, timestamp, MessageType.TEXT);
+                return new TextMessage(content, sender, timestamp, Type.TEXT);
             case IMAGE: {
                 MediaEntry info = findMedia(content, mediaFiles, "image");
                 String name = info != null ? info.getName() : "image.jpg";
@@ -138,7 +138,7 @@ public class WhatsAppChatParser {
                     } catch (Exception ignored) {
                     }
                 }
-                return new ImageMessage(name, h, w, size, extension(name), sender, timestamp, MessageType.IMAGE);
+                return new ImageMessage(name, h, w, size, extension(name), sender, timestamp, Type.IMAGE);
             }
             case VIDEO: {
                 MediaEntry info = findMedia(content, mediaFiles, "video");
@@ -159,7 +159,7 @@ public class WhatsAppChatParser {
                     } catch (Exception ignored) {
                     }
                 }
-                return new VideoMessage(name, size, dur, extension(name), vw, vh, sender, timestamp, MessageType.VIDEO);
+                return new VideoMessage(name, size, dur, extension(name), vw, vh, sender, timestamp, Type.VIDEO);
             }
             case AUDIO: {
                 MediaEntry info = findMedia(content, mediaFiles, "audio");
@@ -189,19 +189,19 @@ public class WhatsAppChatParser {
                     } catch (Exception ignored) {
                     }
                 }
-                return new AudioMessage(name, size, dur, extension(name), sender, timestamp, MessageType.AUDIO);
+                return new AudioMessage(name, size, dur, extension(name), sender, timestamp, Type.AUDIO);
             }
             case DOCUMENT: {
                 MediaEntry info = findMedia(content, mediaFiles, "document");
                 String name = info != null ? info.getName() : "document.pdf";
                 int size = info != null ? (int) info.getSize() : 0;
-                return new DocumentMessage(name, extension(name), size, sender, timestamp, MessageType.DOCUMENT);
+                return new DocumentMessage(name, extension(name), size, sender, timestamp, Type.DOCUMENT);
             }
             case STICKER: {
                 MediaEntry info = findMedia(content, mediaFiles, "sticker");
                 String name = info != null ? info.getName() : "sticker.webp";
                 int size = info != null ? (int) info.getSize() : 0;
-                return new StickerMessage(name, size, extension(name), sender, timestamp, MessageType.STICKER);
+                return new StickerMessage(name, size, extension(name), sender, timestamp, Type.STICKER);
             }
             default:
                 return null;
@@ -212,32 +212,32 @@ public class WhatsAppChatParser {
      * Classifies a message based on its string content.
      *
      * @param content the raw message content text
-     * @return the determined MessageType
+     * @return the determined Type
      */
-    public static MessageType classifyMessage(String content) {
+    public static Type classifyMessage(String content) {
         String lc = content.toLowerCase().trim();
         if (lc.equals("<media omitted>"))
-            return MessageType.AUDIO;
+            return Type.AUDIO;
         if (lc.contains("you deleted this message") || lc.contains("this message was deleted"))
-            return MessageType.TEXT;
+            return Type.TEXT;
         if (lc.contains("(file attached)")) {
             if (lc.contains("stk") && lc.contains(".webp"))
-                return MessageType.STICKER;
+                return Type.STICKER;
             if (lc.contains(".jpg") || lc.contains(".jpeg") || lc.contains(".png") || lc.contains(".gif")
                     || lc.contains(".bmp") || lc.contains(".webp"))
-                return MessageType.IMAGE;
+                return Type.IMAGE;
             if (lc.contains(".mp4") || lc.contains(".avi") || lc.contains(".mov") || lc.contains(".mkv")
                     || lc.contains(".webm"))
-                return MessageType.VIDEO;
+                return Type.VIDEO;
             if (lc.contains(".mp3") || lc.contains(".wav") || lc.contains(".ogg") || lc.contains(".m4a")
                     || lc.contains(".aac") || lc.contains(".opus"))
-                return MessageType.AUDIO;
+                return Type.AUDIO;
             if (lc.contains(".pdf") || lc.contains(".doc") || lc.contains(".docx") || lc.contains(".xls")
                     || lc.contains(".xlsx") || lc.contains(".ppt") || lc.contains(".pptx") || lc.contains(".zip")
                     || lc.contains(".rar") || lc.contains(".txt"))
-                return MessageType.DOCUMENT;
+                return Type.DOCUMENT;
         }
-        return MessageType.TEXT;
+        return Type.TEXT;
     }
 
     /**

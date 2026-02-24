@@ -18,17 +18,17 @@ public abstract class Message {
     /**
      * The category of this message.
      */
-    private MessageType messageType;
+    private Type type;
 
     /**
-     * @param sender      the display name of the message sender
-     * @param timestamp   the moment the message was sent
-     * @param messageType the content category of the message
+     * @param sender    the display name of the message sender
+     * @param timestamp the moment the message was sent
+     * @param type      the content category of the message
      */
-    public Message(String sender, java.util.Date timestamp, MessageType messageType) {
+    public Message(String sender, java.util.Date timestamp, Type type) {
         this.sender = sender;
         this.timestamp = timestamp;
-        this.messageType = messageType;
+        this.type = type;
     }
 
     /**
@@ -54,14 +54,14 @@ public abstract class Message {
      * 
      * @return the message type
      */
-    public MessageType getMessageType() {
-        return messageType;
+    public Type getType() {
+        return type;
     }
 
     /**
      * Enumeration of all content categories supported by the WhatsApp chat parser.
      */
-    public enum MessageType {
+    public enum Type {
         /** Plain-text message. */
         TEXT,
         /** Photo or image attachment. */

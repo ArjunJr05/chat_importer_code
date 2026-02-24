@@ -3,7 +3,7 @@ package com.zoho.arattai.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 
 /**
  * Immutable container for a fully-parsed WhatsApp chat export.
@@ -22,7 +22,7 @@ import com.zoho.arattai.core.Message.MessageType;
  * System.out.println("Chat: " + export.getChatName());
  *
  * for (Message msg : export.getAllMessages()) {
- *     System.out.println(msg.getSender() + " : " + msg.getMessageType());
+ *     System.out.println(msg.getSender() + " : " + msg.getType());
  * }
  * }</pre>
  *
@@ -30,7 +30,7 @@ import com.zoho.arattai.core.Message.MessageType;
  * @version 1.0
  * @see com.zoho.arattai.core.WhatsAppChatParser
  * @see Message
- * @see MessageType
+ * @see Type
  */
 public class WhatsAppExport {
 

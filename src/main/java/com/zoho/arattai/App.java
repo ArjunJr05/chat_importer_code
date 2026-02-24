@@ -66,6 +66,11 @@ public class App {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        Message message = new ImageMessage("test.jpg", 100, 100, 500, "jpg", "Arjun", new Date(),
+                Message.Type.IMAGE);
+
+        System.out.println(message.getSender());
+
         try {
             System.out.println("=======================================");
             System.out.println("  WhatsApp Chat Parser - Chat Importer");
@@ -153,7 +158,7 @@ public class App {
         System.out.println("Chat Name: " + chatName);
         System.out.println("Sender: " + msg.getSender());
         System.out.println("Timestamp: " + fmt(msg.getTimestamp()));
-        System.out.println("Message Type: " + msg.getMessageType());
+        System.out.println("Message Type: " + msg.getType());
 
         if (msg instanceof TextMessage) {
             TextMessage m = (TextMessage) msg;
@@ -165,14 +170,14 @@ public class App {
             System.out.println("Image Height: " + m.getHeight());
             System.out.println("Image Width: " + m.getWidth());
             System.out.println("Image Size: " + m.getSize() + " bytes");
-            System.out.println("Image Type: " + m.getType());
+            System.out.println("Image Type: " + m.getExtension());
 
         } else if (msg instanceof VideoMessage) {
             VideoMessage m = (VideoMessage) msg;
             System.out.println("Video Name: " + m.getName());
             System.out.println("Video Size: " + m.getSize() + " bytes");
             System.out.println("Video Duration: " + m.getDuration());
-            System.out.println("Video Type: " + m.getType());
+            System.out.println("Video Type: " + m.getExtension());
             System.out.println("Video Width: " + m.getWidth());
             System.out.println("Video Height: " + m.getHeight());
 
@@ -181,18 +186,18 @@ public class App {
             System.out.println("Audio Name: " + m.getName());
             System.out.println("Audio Size: " + m.getSize() + " bytes");
             System.out.println("Audio Duration: " + m.getDuration());
-            System.out.println("Audio Type: " + m.getType());
+            System.out.println("Audio Type: " + m.getExtension());
 
         } else if (msg instanceof DocumentMessage) {
             DocumentMessage m = (DocumentMessage) msg;
             System.out.println("Document Name: " + m.getName());
-            System.out.println("Document Type: " + m.getType());
+            System.out.println("Document Type: " + m.getExtension());
             System.out.println("Document Size: " + m.getSize() + " bytes");
 
         } else if (msg instanceof StickerMessage) {
             StickerMessage m = (StickerMessage) msg;
             System.out.println("Sticker Name: " + m.getName());
-            System.out.println("Sticker Type: " + m.getType());
+            System.out.println("Sticker Type: " + m.getExtension());
             System.out.println("Sticker Size: " + m.getSize() + " bytes");
         }
     }

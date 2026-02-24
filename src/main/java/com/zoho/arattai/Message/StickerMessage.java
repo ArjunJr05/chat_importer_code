@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -46,7 +46,7 @@ public class StickerMessage extends Message {
      * The lowercase file extension of the sticker.
      * Always {@code "webp"} for WhatsApp stickers.
      */
-    private final String type;
+    private final String extension;
 
     /**
      * Constructs a new {@code StickerMessage} with all metadata provided by the
@@ -63,12 +63,12 @@ public class StickerMessage extends Message {
      * @param messageType the type classification; expected to be
      *                    {@link MessageType#STICKER}
      */
-    public StickerMessage(String name, int size, String type,
-            String sender, java.util.Date timestamp, MessageType messageType) {
+    public StickerMessage(String name, int size, String extension,
+            String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.name = name;
         this.size = size;
-        this.type = type;
+        this.extension = extension;
     }
 
     /**
@@ -96,7 +96,7 @@ public class StickerMessage extends Message {
      * @return format extension — always {@code "webp"} for WhatsApp stickers;
      *         never {@code null}
      */
-    public String getType() {
-        return type;
+    public String getExtension() {
+        return extension;
     }
 }

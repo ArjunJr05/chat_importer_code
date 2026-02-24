@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -55,7 +55,7 @@ public class AudioMessage extends Message {
      * The lowercase file extension identifying the audio format
      * (e.g., {@code "opus"}, {@code "mp3"}).
      */
-    private final String type;
+    private final String extension;
 
     /**
      * Constructs a new {@code AudioMessage} with all metadata provided by the
@@ -73,13 +73,13 @@ public class AudioMessage extends Message {
      * @param messageType the type classification; expected to be
      *                    {@link MessageType#AUDIO}
      */
-    public AudioMessage(String name, int size, String duration, String type,
-            String sender, java.util.Date timestamp, MessageType messageType) {
+    public AudioMessage(String name, int size, String duration, String extension,
+            String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.name = name;
         this.size = size;
         this.duration = duration;
-        this.type = type;
+        this.extension = extension;
     }
 
     /**
@@ -116,7 +116,7 @@ public class AudioMessage extends Message {
      * @return format extension (e.g., {@code "opus"}, {@code "mp3"}); never
      *         {@code null}
      */
-    public String getType() {
-        return type;
+    public String getExtension() {
+        return extension;
     }
 }

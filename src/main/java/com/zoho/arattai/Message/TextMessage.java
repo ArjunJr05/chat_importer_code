@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -45,7 +45,7 @@ public class TextMessage extends Message {
      * @param messageType the type classification; expected to be
      *                    {@link MessageType#TEXT}
      */
-    public TextMessage(String text, String sender, java.util.Date timestamp, MessageType messageType) {
+    public TextMessage(String text, String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.text = text;
     }

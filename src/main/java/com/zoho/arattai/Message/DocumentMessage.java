@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -36,7 +36,7 @@ public class DocumentMessage extends Message {
      * The lowercase file extension identifying the document format
      * (e.g., {@code "pdf"}, {@code "docx"}, {@code "zip"}).
      */
-    private final String type;
+    private final String extension;
 
     /** The uncompressed file size of the document in bytes. */
     private final int size;
@@ -55,11 +55,11 @@ public class DocumentMessage extends Message {
      * @param messageType the type classification; expected to be
      *                    {@link MessageType#DOCUMENT}
      */
-    public DocumentMessage(String name, String type, int size,
-            String sender, java.util.Date timestamp, MessageType messageType) {
+    public DocumentMessage(String name, String extension, int size,
+            String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.name = name;
-        this.type = type;
+        this.extension = extension;
         this.size = size;
     }
 
@@ -78,8 +78,8 @@ public class DocumentMessage extends Message {
      * @return format extension (e.g., {@code "pdf"}, {@code "zip"}); never
      *         {@code null}
      */
-    public String getType() {
-        return type;
+    public String getExtension() {
+        return extension;
     }
 
     /**

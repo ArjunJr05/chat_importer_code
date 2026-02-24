@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -50,7 +50,7 @@ public class VideoMessage extends Message {
      * The lowercase file extension identifying the video container format
      * (e.g., {@code "mp4"}, {@code "mkv"}).
      */
-    private final String type;
+    private final String extension;
 
     /**
      * The horizontal resolution of the video in pixels, or {@code 0} if unknown.
@@ -80,14 +80,14 @@ public class VideoMessage extends Message {
      * @param messageType the type classification; expected to be
      *                    {@link MessageType#VIDEO}
      */
-    public VideoMessage(String name, int size, String duration, String type,
+    public VideoMessage(String name, int size, String duration, String extension,
             int width, int height,
-            String sender, java.util.Date timestamp, MessageType messageType) {
+            String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.name = name;
         this.size = size;
         this.duration = duration;
-        this.type = type;
+        this.extension = extension;
         this.width = width;
         this.height = height;
     }
@@ -126,8 +126,8 @@ public class VideoMessage extends Message {
      * @return format extension (e.g., {@code "mp4"}, {@code "mov"}); never
      *         {@code null}
      */
-    public String getType() {
-        return type;
+    public String getExtension() {
+        return extension;
     }
 
     /**

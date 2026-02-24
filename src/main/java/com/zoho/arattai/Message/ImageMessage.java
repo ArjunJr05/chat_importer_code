@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.core.Message.MessageType;
+import com.zoho.arattai.core.Message.Type;
 import com.zoho.arattai.core.Message;
 
 /**
@@ -49,7 +49,7 @@ public class ImageMessage extends Message {
      * The lowercase file extension that identifies the image format
      * (e.g., {@code "jpg"}, {@code "png"}, {@code "webp"}).
      */
-    private final String type;
+    private final String extension;
 
     /**
      * Constructs a new {@code ImageMessage} with all metadata provided by the
@@ -68,13 +68,13 @@ public class ImageMessage extends Message {
      *                    {@link MessageType#IMAGE}
      */
     public ImageMessage(String name, int height, int width, int size,
-            String type, String sender, java.util.Date timestamp, MessageType messageType) {
+            String extension, String sender, java.util.Date timestamp, Type messageType) {
         super(sender, timestamp, messageType);
         this.name = name;
         this.height = height;
         this.width = width;
         this.size = size;
-        this.type = type;
+        this.extension = extension;
     }
 
     /**
@@ -119,7 +119,7 @@ public class ImageMessage extends Message {
      * @return image format extension (e.g., {@code "jpg"}, {@code "png"}); never
      *         {@code null}
      */
-    public String getType() {
-        return type;
+    public String getExtension() {
+        return extension;
     }
 }
