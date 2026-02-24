@@ -1,30 +1,35 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.Model.MessageType;
+import com.zoho.arattai.core.Message.MessageType;
 import com.zoho.arattai.core.Message;
 
 /**
- * Represents an animated WebP sticker message parsed from a WhatsApp chat export.
+ * Represents an animated WebP sticker message parsed from a WhatsApp chat
+ * export.
  *
- * <p>WhatsApp names every sticker file using the convention
+ * <p>
+ * WhatsApp names every sticker file using the convention
  * {@code STK-<date>-WA<seq>.webp} (e.g., {@code STK-20260102-WA0003.webp}).
  * The parser uses this naming convention — specifically the presence of the
  * substring {@code "stk"} combined with the {@code ".webp"} extension — to
- * distinguish stickers from regular {@link ImageMessage image} attachments, which
+ * distinguish stickers from regular {@link ImageMessage image} attachments,
+ * which
  * can also be {@code .webp} files.
  *
- * <p>Sticker payloads are animated WebP files; no content decoding is performed
- * on them.  Only the metadata available in the ZIP directory entry (filename and
+ * <p>
+ * Sticker payloads are animated WebP files; no content decoding is performed
+ * on them. Only the metadata available in the ZIP directory entry (filename and
  * uncompressed size) is captured.
  *
- * <p>All fields are immutable ({@code private final}) and initialised at
+ * <p>
+ * All fields are immutable ({@code private final}) and initialised at
  * construction time.
  *
- * @author  Zoho Arattai
+ * @author Zoho Arattai
  * @version 1.0
- * @see     Message
- * @see     MessageType#STICKER
- * @see     ImageMessage
+ * @see Message
+ * @see MessageType#STICKER
+ * @see ImageMessage
  */
 public class StickerMessage extends Message {
 
@@ -44,15 +49,19 @@ public class StickerMessage extends Message {
     private final String stickerType;
 
     /**
-     * Constructs a new {@code StickerMessage} with all metadata provided by the parser.
+     * Constructs a new {@code StickerMessage} with all metadata provided by the
+     * parser.
      *
-     * @param stickerName the sticker filename inside the ZIP; must not be {@code null}
+     * @param stickerName the sticker filename inside the ZIP; must not be
+     *                    {@code null}
      * @param stickerSize the file size in bytes
      * @param stickerType the lowercase file extension (typically {@code "webp"});
      *                    must not be {@code null}
      * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be {@code null}
-     * @param messageType the type classification; expected to be {@link MessageType#STICKER}
+     * @param timestamp   the date and time the message was sent; must not be
+     *                    {@code null}
+     * @param messageType the type classification; expected to be
+     *                    {@link MessageType#STICKER}
      */
     public StickerMessage(String stickerName, int stickerSize, String stickerType,
             String sender, java.util.Date timestamp, MessageType messageType) {

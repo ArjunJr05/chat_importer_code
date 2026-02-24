@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;
 
 import com.zoho.arattai.Message.*;
-import com.zoho.arattai.Parser.WhatsAppChatParser;
+import com.zoho.arattai.core.WhatsAppChatParser;
 import com.zoho.arattai.core.Message;
 import com.zoho.arattai.core.WhatsAppExport;
 

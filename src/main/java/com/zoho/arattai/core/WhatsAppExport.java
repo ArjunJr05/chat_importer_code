@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.zoho.arattai.Message.*;
-import com.zoho.arattai.Model.MessageType;
+import com.zoho.arattai.core.Message.MessageType;
 
 /**
  * Immutable container for a fully-parsed WhatsApp chat export.
  *
  * <p>
  * A {@code WhatsAppExport} instance is created by
- * {@link com.zoho.arattai.Parser.WhatsAppChatParser#parse(String)} after it has
+ * {@link com.zoho.arattai.core.WhatsAppChatParser#parse(String)} after it has
  * read the export ZIP, discovered the chat transcript, and converted every line
  * into a typed {@link Message} subclass. Callers obtain the data through the
  * typed accessor methods below rather than by inspecting the raw message list.
@@ -31,7 +31,7 @@ import com.zoho.arattai.Model.MessageType;
  *
  * @author Zoho Arattai
  * @version 1.0
- * @see com.zoho.arattai.Parser.WhatsAppChatParser
+ * @see com.zoho.arattai.core.WhatsAppChatParser
  * @see Message
  * @see MessageType
  */
@@ -51,14 +51,19 @@ public class WhatsAppExport {
     private List<Message> messages = new ArrayList<>();
 
     /**
-     * Constructs an empty {@code WhatsAppExport} for the given chat.
-     * The message list is populated afterwards by the parser via
-     * {@link #setAllMessages(List)}.
-     *
-     * @param chatName the display name of this chat; must not be {@code null}
+     * @param chatName the display name of this chat
      */
     public WhatsAppExport(String chatName) {
         this.chatName = chatName;
+    }
+
+    /**
+     * @param chatName the display name of this chat
+     * @param messages the ordered list of parsed messages
+     */
+    public WhatsAppExport(String chatName, List<Message> messages) {
+        this.chatName = chatName;
+        this.messages = messages;
     }
 
     /**

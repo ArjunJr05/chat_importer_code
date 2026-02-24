@@ -1,4 +1,4 @@
-package com.zoho.arattai.Parser;
+package com.zoho.arattai.core;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -11,42 +11,40 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import com.zoho.arattai.Message.*;
-import com.zoho.arattai.Model.MessageType;
-import com.zoho.arattai.core.Message;
-import com.zoho.arattai.core.WhatsAppExport;
+import com.zoho.arattai.core.Message.MessageType;
+
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import com.mpatric.mp3agic.Mp3File;
 
 /**
  * Stateless parser for WhatsApp chat export ZIP files.
- *
- * <p>
- * Call {@link #parse(String)} with the path to a {@code .zip} file exported
- * from WhatsApp. The parser indexes all media entries in the archive and then
- * reads the chat transcript line by line, producing a
- * {@link com.zoho.arattai.core.WhatsAppExport}
- * containing typed {@link com.zoho.arattai.core.Message} subclass instances.
- *
- * @author Zoho Arattai
- * @version 1.0
  */
 public class WhatsAppChatParser {
 
-    private static final Pattern MESSAGE_PATTERN = Pattern.compile(
-            "^(\\d{1,2}/\\d{1,2}/\\d{4},\\s+\\d{1,2}:\\d{2}.?[ap]m)\\s*-\\s*([^:]+):\\s(.*)$");
-
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy, hh:mm a", Locale.ENGLISH);
+    /**
+     * The regex pattern used to identify and parse individual WhatsApp message
+     * lines.
+     */
+    public static final Pattern MESSAGE_PATTERN = Pattern.compile(
+            "^(\\d{1,2}/\\d{1,2}/\\d{4},[\\s\\u202f\\u00a0]+\\d{1,2}:\\d{2}(?::\\d{2})?[\\s\\u202f\\u00a0]*[ap]m)\\s*-\\s*([^:]+):\\s(.*)$",
+            Pattern.CASE_INSENSITIVE);
 
     /**
-     * Parses a WhatsApp chat export ZIP file into a structured
-     * {@link com.zoho.arattai.core.WhatsAppExport}.
+     * The date pattern used for parsing timestamps from the chat transcript.
+     */
+    public static final String DATE_PATTERN = "dd/MM/yyyy, h:mm a";
+
+    /**
+     * Parses a WhatsApp chat export ZIP file.
      *
-     * @param zipFilePath the absolute path to the export {@code .zip} file
-     * @return a {@link com.zoho.arattai.core.WhatsAppExport} with all parsed
-     *         messages
-     * @throws IOException if the file cannot be read or is not a valid ZIP
+     * @param zipFilePath path to the ZIP file
+     * @return the parsed export
+     * @throws IOException if an error occurs during parsing
      */
     public static WhatsAppExport parse(String zipFilePath) throws IOException {
         String chatName = extractChatName(zipFilePath);
-        WhatsAppExport export = new WhatsAppExport(chatName);
+        List<Message> messages = new ArrayList<>();
         Map<String, MediaEntry> mediaFiles = new HashMap<>();
         try (ZipFile zipFile = new ZipFile(zipFilePath)) {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
@@ -63,23 +61,32 @@ public class WhatsAppChatParser {
                     try (InputStream is = zipFile.getInputStream(entry);
                             BufferedReader reader = new BufferedReader(
                                     new InputStreamReader(is, StandardCharsets.UTF_8))) {
-                        export.setAllMessages(parseTranscript(reader, mediaFiles, zipFilePath));
+                        messages = parseTranscript(reader, mediaFiles, zipFile);
                     }
                     break;
                 }
             }
         }
-        return export;
+        return new WhatsAppExport(chatName, messages);
     }
 
-    private static List<Message> parseTranscript(BufferedReader reader,
-            Map<String, MediaEntry> mediaFiles, String zipFilePath) throws IOException {
+    /**
+     * Parses the full transcript using the provided BufferedReader.
+     *
+     * @param reader     the BufferedReader for the transcript text file
+     * @param mediaFiles a map of indexed media filenames and entries
+     * @param zipFile    the ZipFile containing the transcript and media
+     * @return a list of parsed Message objects
+     * @throws IOException if an error occurs during reading
+     */
+    public static List<Message> parseTranscript(BufferedReader reader,
+            Map<String, MediaEntry> mediaFiles, ZipFile zipFile) throws IOException {
         List<Message> messages = new ArrayList<>();
         String pending = null, line;
         while ((line = reader.readLine()) != null) {
             if (MESSAGE_PATTERN.matcher(line).matches()) {
                 if (pending != null) {
-                    Message msg = buildMessage(pending, mediaFiles, zipFilePath);
+                    Message msg = buildMessage(pending, mediaFiles, zipFile);
                     if (msg != null)
                         messages.add(msg);
                 }
@@ -89,14 +96,22 @@ public class WhatsAppChatParser {
             }
         }
         if (pending != null) {
-            Message msg = buildMessage(pending, mediaFiles, zipFilePath);
+            Message msg = buildMessage(pending, mediaFiles, zipFile);
             if (msg != null)
                 messages.add(msg);
         }
         return messages;
     }
 
-    private static Message buildMessage(String rawLine, Map<String, MediaEntry> mediaFiles, String zipFilePath) {
+    /**
+     * Builds a single Message object from a raw line from the transcript.
+     *
+     * @param rawLine    the raw string representing one message
+     * @param mediaFiles a map of indexed media filenames and entries
+     * @param zipFile    the ZipFile context for media extraction
+     * @return a Message object (or subclass instance) or null if unparseable
+     */
+    public static Message buildMessage(String rawLine, Map<String, MediaEntry> mediaFiles, ZipFile zipFile) {
         Matcher m = MESSAGE_PATTERN.matcher(rawLine.split("\n")[0]);
         if (!m.matches())
             return null;
@@ -111,10 +126,10 @@ public class WhatsAppChatParser {
                 String name = info != null ? info.name : "image.jpg";
                 int size = info != null ? (int) info.size : 0, w = 0, h = 0;
                 if (info != null) {
-                    try (ZipFile zf = new ZipFile(zipFilePath)) {
-                        ZipEntry ze = zf.getEntry(info.name);
+                    try {
+                        ZipEntry ze = zipFile.getEntry(info.name);
                         if (ze != null) {
-                            java.awt.image.BufferedImage img = javax.imageio.ImageIO.read(zf.getInputStream(ze));
+                            BufferedImage img = ImageIO.read(zipFile.getInputStream(ze));
                             if (img != null) {
                                 w = img.getWidth();
                                 h = img.getHeight();
@@ -131,10 +146,10 @@ public class WhatsAppChatParser {
                 int size = info != null ? (int) info.size : 0, vw = 0, vh = 0;
                 String dur = "0:00";
                 if (info != null) {
-                    try (ZipFile zf = new ZipFile(zipFilePath)) {
-                        ZipEntry ze = zf.getEntry(info.name);
+                    try {
+                        ZipEntry ze = zipFile.getEntry(info.name);
                         if (ze != null) {
-                            File tmp = extractToTemp(zf, ze, "video", extension(name));
+                            File tmp = extractToTemp(zipFile, ze, "video", extension(name));
                             dur = parseMp4Duration(tmp);
                             int[] dims = parseMp4Dimensions(tmp);
                             vw = dims[0];
@@ -152,16 +167,16 @@ public class WhatsAppChatParser {
                 int size = info != null ? (int) info.size : 0;
                 String dur = "0:00";
                 if (info != null) {
-                    try (ZipFile zf = new ZipFile(zipFilePath)) {
-                        ZipEntry ze = zf.getEntry(info.name);
+                    try {
+                        ZipEntry ze = zipFile.getEntry(info.name);
                         if (ze != null) {
                             String ext = extension(name);
-                            File tmp = extractToTemp(zf, ze, "audio", ext);
+                            File tmp = extractToTemp(zipFile, ze, "audio", ext);
                             if (ext.equals("opus") || ext.equals("ogg")) {
                                 dur = parseOpusDuration(tmp);
                             } else if (ext.equals("mp3")) {
                                 try {
-                                    com.mpatric.mp3agic.Mp3File mp3 = new com.mpatric.mp3agic.Mp3File(tmp);
+                                    Mp3File mp3 = new Mp3File(tmp);
                                     long s = mp3.getLengthInSeconds();
                                     dur = String.format("%d:%02d", s / 60, s % 60);
                                 } catch (Exception i2) {
@@ -193,7 +208,13 @@ public class WhatsAppChatParser {
         }
     }
 
-    private static MessageType classifyMessage(String content) {
+    /**
+     * Classifies a message based on its string content.
+     *
+     * @param content the raw message content text
+     * @return the determined MessageType
+     */
+    public static MessageType classifyMessage(String content) {
         String lc = content.toLowerCase().trim();
         if (lc.equals("<media omitted>"))
             return MessageType.AUDIO;
@@ -219,7 +240,15 @@ public class WhatsAppChatParser {
         return MessageType.TEXT;
     }
 
-    private static MediaEntry findMedia(String content, Map<String, MediaEntry> mediaFiles, String type) {
+    /**
+     * Resolves a media attachment's filename from the content string.
+     *
+     * @param content    the raw message content
+     * @param mediaFiles the index of files present in the ZIP
+     * @param type       the expected category (image/video/audio, etc.)
+     * @return the matching MediaEntry, or null if not found
+     */
+    public static MediaEntry findMedia(String content, Map<String, MediaEntry> mediaFiles, String type) {
         String lc = content.toLowerCase();
         for (String name : mediaFiles.keySet()) {
             String ln = name.toLowerCase();
@@ -254,7 +283,13 @@ public class WhatsAppChatParser {
         return null;
     }
 
-    private static String parseOpusDuration(File file) {
+    /**
+     * Extracts and calculates the duration of an Opus audio file.
+     *
+     * @param file the temp file containing the Opus data
+     * @return duration string in m:ss format
+     */
+    public static String parseOpusDuration(File file) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
             long len = raf.length(), start = Math.max(0, len - 65536);
             raf.seek(start);
@@ -276,21 +311,20 @@ public class WhatsAppChatParser {
         return "0:00";
     }
 
-    private static String parseMp4Duration(File file) {
+    /**
+     * Extracts the duration of an MP4/M4A video or audio file.
+     *
+     * @param file the temp file containing the MP4 data
+     * @return duration string in m:ss format
+     */
+    public static String parseMp4Duration(File file) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-            // Read the entire file — WhatsApp MP4s place the moov atom at the END
-            // of the file (tail-moov layout), so a small read cap would miss it.
-            long fileLen = raf.length();
-            byte[] b = new byte[(int) fileLen];
+            byte[] b = new byte[(int) Math.min(raf.length(), 1024 * 1024)];
             raf.readFully(b);
             for (int i = 0; i < b.length - 20; i++) {
                 if (b[i] == 'm' && b[i + 1] == 'v' && b[i + 2] == 'h' && b[i + 3] == 'd') {
                     int v = b[i + 4] & 0xFF;
                     long ts, dur;
-                    // Offsets from the 'mvhd' FCC position (i):
-                    // v0: +4(ver+flags) +8(create) +12(modify) +16(timescale) +20(duration)
-                    // v1: +4(ver+flags) +8(create64) +16(modify64) +24(trackId?) — actually:
-                    // +4(ver+flags) +8(create8) +16(modify8) +24(timescale) +28(duration8)
                     if (v == 1 && i + 36 < b.length) {
                         ts = i32(b, i + 24);
                         dur = i64(b, i + 28);
@@ -305,12 +339,18 @@ public class WhatsAppChatParser {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         return "0:00";
     }
 
-    private static int[] parseMp4Dimensions(File file) {
+    /**
+     * Extracts the pixel dimensions of an MP4 video file.
+     *
+     * @param file the temp file containing the MP4 data
+     * @return an int array where [0]=width and [1]=height
+     */
+    public static int[] parseMp4Dimensions(File file) {
         try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
             byte[] b = new byte[(int) Math.min(raf.length(), 2 * 1024 * 1024)];
             raf.readFully(b);
@@ -330,7 +370,17 @@ public class WhatsAppChatParser {
         return new int[] { 0, 0 };
     }
 
-    private static File extractToTemp(ZipFile zf, ZipEntry ze, String prefix, String ext) throws IOException {
+    /**
+     * Extracts a file from the ZIP archive to a temporary file on disk.
+     *
+     * @param zf     the source ZipFile
+     * @param ze     the ZipEntry to extract
+     * @param prefix temporary file prefix
+     * @param ext    temporary file extension
+     * @return the temporary File object
+     * @throws IOException if extraction fails
+     */
+    public static File extractToTemp(ZipFile zf, ZipEntry ze, String prefix, String ext) throws IOException {
         File tmp = File.createTempFile(prefix, "." + ext);
         try (InputStream is = zf.getInputStream(ze)) {
             java.nio.file.Files.copy(is, tmp.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
@@ -338,35 +388,78 @@ public class WhatsAppChatParser {
         return tmp;
     }
 
-    private static String extension(String f) {
+    /**
+     * Extracts the file extension from a filename.
+     *
+     * @param f the filename string
+     * @return the extension (e.g., "jpg") or "unknown"
+     */
+    public static String extension(String f) {
         int d = f.lastIndexOf('.');
         return (d > 0 && d < f.length() - 1) ? f.substring(d + 1).toLowerCase() : "unknown";
     }
 
-    private static String extractChatName(String p) {
+    /**
+     * Sanitizes and extracts the chat name from the ZIP filename.
+     *
+     * @param p path to the ZIP file
+     * @return clean chat name
+     */
+    public static String extractChatName(String p) {
         return new File(p).getName().replaceAll("\\.zip$", "").replaceAll("^WhatsApp Chat with ", "");
     }
 
-    private static Date parseTimestamp(String raw) {
+    /**
+     * Parses a timestamp string into a Date object.
+     *
+     * @param raw the raw timestamp string from the transcript
+     * @return the parsed Date, or current date if parsing fails
+     */
+    public static Date parseTimestamp(String raw) {
+        String clean = raw.replaceAll("[\\s\\u202f\\u00a0]+", " ").trim();
         try {
-            return DATE_FORMAT.parse(raw.replaceAll("\\s+", " ").trim());
-        } catch (ParseException e) {
-            return new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN, Locale.ENGLISH);
+            return sdf.parse(clean);
+        } catch (ParseException ignored) {
         }
+        return new Date();
     }
 
-    private static long i32(byte[] b, int o) {
+    /**
+     * Reads a 32-bit big-endian integer from a byte array.
+     *
+     * @param b the byte array
+     * @param o the offset to start reading from
+     * @return the parsed long value
+     */
+    public static long i32(byte[] b, int o) {
         return ((b[o] & 0xFFL) << 24) | ((b[o + 1] & 0xFFL) << 16) | ((b[o + 2] & 0xFFL) << 8) | (b[o + 3] & 0xFFL);
     }
 
-    private static long i64(byte[] b, int o) {
+    /**
+     * Reads a 64-bit big-endian integer from a byte array.
+     *
+     * @param b the byte array
+     * @param o the offset to start reading from
+     * @return the parsed long value
+     */
+    public static long i64(byte[] b, int o) {
         return (i32(b, o) << 32) | (i32(b, o + 4) & 0xFFFFFFFFL);
     }
 
-    private static class MediaEntry {
-        final String name;
-        final long size;
+    /**
+     * Represents a media file entry in the ZIP archive.
+     */
+    public static class MediaEntry {
+        /** Filename of the media entry. */
+        public final String name;
+        /** Byte size of the media entry. */
+        public final long size;
 
+        /**
+         * @param n filename of the media entry
+         * @param s byte size of the media entry
+         */
         MediaEntry(String n, long s) {
             name = n;
             size = s;

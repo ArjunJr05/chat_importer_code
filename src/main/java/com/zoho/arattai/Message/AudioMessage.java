@@ -1,36 +1,41 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.Model.MessageType;
+import com.zoho.arattai.core.Message.MessageType;
 import com.zoho.arattai.core.Message;
 
 /**
- * Represents a voice note or audio file attachment parsed from a WhatsApp chat export.
+ * Represents a voice note or audio file attachment parsed from a WhatsApp chat
+ * export.
  *
- * <p>An {@code AudioMessage} is produced for any message whose attachment filename
+ * <p>
+ * An {@code AudioMessage} is produced for any message whose attachment filename
  * carries one of the following extensions: {@code .opus}, {@code .ogg},
- * {@code .mp3}, {@code .wav}, {@code .m4a}, or {@code .aac}.  In addition,
+ * {@code .mp3}, {@code .wav}, {@code .m4a}, or {@code .aac}. In addition,
  * a bare {@code "<Media omitted>"} line is also treated as an audio message
- * (matching WhatsApp's convention for voice notes that were not included in the export).
+ * (matching WhatsApp's convention for voice notes that were not included in the
+ * export).
  *
- * <p><b>Duration extraction strategy (format-dependent):</b>
+ * <p>
+ * <b>Duration extraction strategy (format-dependent):</b>
  * <ul>
- *   <li><b>Opus / OGG</b> – The last OggS page header is located and its granule
- *       position is divided by the fixed Opus sample rate of 48 000 Hz.
- *       No external tools are required.</li>
- *   <li><b>MP3</b> – Duration is read via the mp3agic library by examining the
- *       ID3 frame data and Xing / VBRI headers.</li>
- *   <li><b>M4A / AAC</b> – The {@code mvhd} (Movie Header) ISOBMFF box is located
- *       and the {@code duration / timescale} ratio is computed directly in Java.</li>
- *   <li>All other formats default to {@code "0:00"}.</li>
+ * <li><b>Opus / OGG</b> – The last OggS page header is located and its granule
+ * position is divided by the fixed Opus sample rate of 48 000 Hz.
+ * No external tools are required.</li>
+ * <li><b>MP3</b> – Duration is read via the mp3agic library by examining the
+ * ID3 frame data and Xing / VBRI headers.</li>
+ * <li><b>M4A / AAC</b> – The {@code mvhd} (Movie Header) ISOBMFF box is located
+ * and the {@code duration / timescale} ratio is computed directly in Java.</li>
+ * <li>All other formats default to {@code "0:00"}.</li>
  * </ul>
  *
- * <p>All fields are immutable ({@code private final}) and initialised at
+ * <p>
+ * All fields are immutable ({@code private final}) and initialised at
  * construction time.
  *
- * @author  Zoho Arattai
+ * @author Zoho Arattai
  * @version 1.0
- * @see     Message
- * @see     MessageType#AUDIO
+ * @see Message
+ * @see MessageType#AUDIO
  */
 public class AudioMessage extends Message {
 
@@ -42,7 +47,7 @@ public class AudioMessage extends Message {
 
     /**
      * The playback duration of the audio clip, formatted as {@code "m:ss"}
-     * (e.g., {@code "0:05"}).  Defaults to {@code "0:00"} when extraction fails.
+     * (e.g., {@code "0:05"}). Defaults to {@code "0:00"} when extraction fails.
      */
     private final String audioDuration;
 
@@ -53,15 +58,20 @@ public class AudioMessage extends Message {
     private final String audioType;
 
     /**
-     * Constructs a new {@code AudioMessage} with all metadata provided by the parser.
+     * Constructs a new {@code AudioMessage} with all metadata provided by the
+     * parser.
      *
-     * @param audioName     the audio filename inside the ZIP; must not be {@code null}
+     * @param audioName     the audio filename inside the ZIP; must not be
+     *                      {@code null}
      * @param audioSize     the file size in bytes
-     * @param audioDuration the playback duration as {@code "m:ss"}; must not be {@code null}
+     * @param audioDuration the playback duration as {@code "m:ss"}; must not be
+     *                      {@code null}
      * @param audioType     the lowercase file extension; must not be {@code null}
      * @param sender        the display name of the sender; must not be {@code null}
-     * @param timestamp     the date and time the message was sent; must not be {@code null}
-     * @param messageType   the type classification; expected to be {@link MessageType#AUDIO}
+     * @param timestamp     the date and time the message was sent; must not be
+     *                      {@code null}
+     * @param messageType   the type classification; expected to be
+     *                      {@link MessageType#AUDIO}
      */
     public AudioMessage(String audioName, int audioSize, String audioDuration, String audioType,
             String sender, java.util.Date timestamp, MessageType messageType) {
@@ -103,7 +113,8 @@ public class AudioMessage extends Message {
     /**
      * Returns the lowercase file extension identifying the audio format.
      *
-     * @return format extension (e.g., {@code "opus"}, {@code "mp3"}); never {@code null}
+     * @return format extension (e.g., {@code "opus"}, {@code "mp3"}); never
+     *         {@code null}
      */
     public String getAudioType() {
         return audioType;

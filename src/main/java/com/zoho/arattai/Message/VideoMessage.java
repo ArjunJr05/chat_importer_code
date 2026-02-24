@@ -1,6 +1,6 @@
 package com.zoho.arattai.Message;
 
-import com.zoho.arattai.Model.MessageType;
+import com.zoho.arattai.core.Message.MessageType;
 import com.zoho.arattai.core.Message;
 
 /**
