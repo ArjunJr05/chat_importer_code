@@ -25,7 +25,7 @@ import com.zoho.arattai.core.Message;
  * @author Zoho Arattai
  * @version 1.0
  * @see Message
- * @see MessageType#TEXT
+ * @see Type#TEXT
  */
 public class TextMessage extends Message {
 
@@ -38,15 +38,15 @@ public class TextMessage extends Message {
     /**
      * Constructs a new {@code TextMessage}.
      *
-     * @param text        the text body of the message; must not be {@code null}
-     * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be
-     *                    {@code null}
-     * @param messageType the type classification; expected to be
-     *                    {@link MessageType#TEXT}
+     * @param text      the text body of the message; must not be {@code null}
+     * @param sender    the display name of the sender; must not be {@code null}
+     * @param timestamp the date and time the message was sent; must not be
+     *                  {@code null}
+     * @param type      the type classification; expected to be
+     *                  {@link Type#TEXT}
      */
-    public TextMessage(String text, String sender, java.util.Date timestamp, Type messageType) {
-        super(sender, timestamp, messageType);
+    public TextMessage(String text, String sender, java.util.Date timestamp, Type type) {
+        super(sender, timestamp, type);
         this.text = text;
     }
 

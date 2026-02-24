@@ -35,7 +35,7 @@ import com.zoho.arattai.core.Message;
  * @author Zoho Arattai
  * @version 1.0
  * @see Message
- * @see MessageType#AUDIO
+ * @see Type#AUDIO
  */
 public class AudioMessage extends Message {
 
@@ -61,21 +61,21 @@ public class AudioMessage extends Message {
      * Constructs a new {@code AudioMessage} with all metadata provided by the
      * parser.
      *
-     * @param name        the audio filename inside the ZIP; must not be
-     *                    {@code null}
-     * @param size        the file size in bytes
-     * @param duration    the playback duration as {@code "m:ss"}; must not be
-     *                    {@code null}
-     * @param type        the lowercase file extension; must not be {@code null}
-     * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be
-     *                    {@code null}
-     * @param messageType the type classification; expected to be
-     *                    {@link MessageType#AUDIO}
+     * @param name      the audio filename inside the ZIP; must not be
+     *                  {@code null}
+     * @param size      the file size in bytes
+     * @param duration  the playback duration as {@code "m:ss"}; must not be
+     *                  {@code null}
+     * @param extension the lowercase file extension; must not be {@code null}
+     * @param sender    the display name of the sender; must not be {@code null}
+     * @param timestamp the date and time the message was sent; must not be
+     *                  {@code null}
+     * @param type      the type classification; expected to be
+     *                  {@link Type#AUDIO}
      */
     public AudioMessage(String name, int size, String duration, String extension,
-            String sender, java.util.Date timestamp, Type messageType) {
-        super(sender, timestamp, messageType);
+            String sender, java.util.Date timestamp, Type type) {
+        super(sender, timestamp, type);
         this.name = name;
         this.size = size;
         this.duration = duration;

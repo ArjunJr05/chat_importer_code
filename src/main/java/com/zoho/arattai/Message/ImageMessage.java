@@ -28,7 +28,7 @@ import com.zoho.arattai.core.Message;
  * @author Zoho Arattai
  * @version 1.0
  * @see Message
- * @see MessageType#IMAGE
+ * @see Type#IMAGE
  * @see StickerMessage
  */
 public class ImageMessage extends Message {
@@ -55,21 +55,21 @@ public class ImageMessage extends Message {
      * Constructs a new {@code ImageMessage} with all metadata provided by the
      * parser.
      *
-     * @param name        the image filename inside the ZIP; must not be
-     *                    {@code null}
-     * @param height      the image height in pixels ({@code 0} if undetectable)
-     * @param width       the image width in pixels ({@code 0} if undetectable)
-     * @param size        the file size in bytes
-     * @param type        the lowercase file extension; must not be {@code null}
-     * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be
-     *                    {@code null}
-     * @param messageType the type classification; expected to be
-     *                    {@link MessageType#IMAGE}
+     * @param name      the image filename inside the ZIP; must not be
+     *                  {@code null}
+     * @param height    the image height in pixels ({@code 0} if undetectable)
+     * @param width     the image width in pixels ({@code 0} if undetectable)
+     * @param size      the file size in bytes
+     * @param extension the lowercase file extension; must not be {@code null}
+     * @param sender    the display name of the sender; must not be {@code null}
+     * @param timestamp the date and time the message was sent; must not be
+     *                  {@code null}
+     * @param type      the type classification; expected to be
+     *                  {@link Type#IMAGE}
      */
     public ImageMessage(String name, int height, int width, int size,
-            String extension, String sender, java.util.Date timestamp, Type messageType) {
-        super(sender, timestamp, messageType);
+            String extension, String sender, java.util.Date timestamp, Type type) {
+        super(sender, timestamp, type);
         this.name = name;
         this.height = height;
         this.width = width;

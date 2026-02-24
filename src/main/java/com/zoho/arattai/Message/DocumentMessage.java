@@ -25,7 +25,7 @@ import com.zoho.arattai.core.Message;
  * @author Zoho Arattai
  * @version 1.0
  * @see Message
- * @see MessageType#DOCUMENT
+ * @see Type#DOCUMENT
  */
 public class DocumentMessage extends Message {
 
@@ -45,19 +45,19 @@ public class DocumentMessage extends Message {
      * Constructs a new {@code DocumentMessage} with all metadata provided by the
      * parser.
      *
-     * @param name        the document filename inside the ZIP; must not be
-     *                    {@code null}
-     * @param type        the lowercase file extension; must not be {@code null}
-     * @param size        the file size in bytes
-     * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be
-     *                    {@code null}
-     * @param messageType the type classification; expected to be
-     *                    {@link MessageType#DOCUMENT}
+     * @param name      the document filename inside the ZIP; must not be
+     *                  {@code null}
+     * @param extension the lowercase file extension; must not be {@code null}
+     * @param size      the file size in bytes
+     * @param sender    the display name of the sender; must not be {@code null}
+     * @param timestamp the date and time the message was sent; must not be
+     *                  {@code null}
+     * @param type      the type classification; expected to be
+     *                  {@link Type#DOCUMENT}
      */
     public DocumentMessage(String name, String extension, int size,
-            String sender, java.util.Date timestamp, Type messageType) {
-        super(sender, timestamp, messageType);
+            String sender, java.util.Date timestamp, Type type) {
+        super(sender, timestamp, type);
         this.name = name;
         this.extension = extension;
         this.size = size;

@@ -28,7 +28,7 @@ import com.zoho.arattai.core.Message;
  * @author Zoho Arattai
  * @version 1.0
  * @see Message
- * @see MessageType#STICKER
+ * @see Type#STICKER
  * @see ImageMessage
  */
 public class StickerMessage extends Message {
@@ -52,20 +52,20 @@ public class StickerMessage extends Message {
      * Constructs a new {@code StickerMessage} with all metadata provided by the
      * parser.
      *
-     * @param name        the sticker filename inside the ZIP; must not be
-     *                    {@code null}
-     * @param size        the file size in bytes
-     * @param type        the lowercase file extension (typically {@code "webp"});
-     *                    must not be {@code null}
-     * @param sender      the display name of the sender; must not be {@code null}
-     * @param timestamp   the date and time the message was sent; must not be
-     *                    {@code null}
-     * @param messageType the type classification; expected to be
-     *                    {@link MessageType#STICKER}
+     * @param name      the sticker filename inside the ZIP; must not be
+     *                  {@code null}
+     * @param size      the file size in bytes
+     * @param extension the lowercase file extension (typically {@code "webp"});
+     *                  must not be {@code null}
+     * @param sender    the display name of the sender; must not be {@code null}
+     * @param timestamp the date and time the message was sent; must not be
+     *                  {@code null}
+     * @param type      the type classification; expected to be
+     *                  {@link Type#STICKER}
      */
     public StickerMessage(String name, int size, String extension,
-            String sender, java.util.Date timestamp, Type messageType) {
-        super(sender, timestamp, messageType);
+            String sender, java.util.Date timestamp, Type type) {
+        super(sender, timestamp, type);
         this.name = name;
         this.size = size;
         this.extension = extension;
