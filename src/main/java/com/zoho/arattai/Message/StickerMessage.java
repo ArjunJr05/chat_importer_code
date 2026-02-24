@@ -37,16 +37,16 @@ public class StickerMessage extends Message {
      * The filename of the sticker file as stored inside the export ZIP
      * (e.g., {@code "STK-20260102-WA0003.webp"}).
      */
-    public final String name;
+    private final String name;
 
     /** The uncompressed file size of the sticker in bytes. */
-    public final int size;
+    private final int size;
 
     /**
      * The lowercase file extension of the sticker.
      * Always {@code "webp"} for WhatsApp stickers.
      */
-    public final String type;
+    private final String type;
 
     /**
      * Constructs a new {@code StickerMessage} with all metadata provided by the

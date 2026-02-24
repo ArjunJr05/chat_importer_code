@@ -41,6 +41,7 @@ import com.zoho.arattai.core.WhatsAppExport;
  * @see WhatsAppChatParser
  * @see WhatsAppExport
  */
+
 public class App {
 
     /**
@@ -150,9 +151,9 @@ public class App {
      */
     public static void printMessage(Message msg, String chatName) {
         System.out.println("Chat Name: " + chatName);
-        System.out.println("Sender: " + msg.sender);
-        System.out.println("Timestamp: " + fmt(msg.timestamp));
-        System.out.println("Message Type: " + msg.messageType);
+        System.out.println("Sender: " + msg.getSender());
+        System.out.println("Timestamp: " + fmt(msg.getTimestamp()));
+        System.out.println("Message Type: " + msg.getMessageType());
 
         if (msg instanceof TextMessage) {
             TextMessage m = (TextMessage) msg;

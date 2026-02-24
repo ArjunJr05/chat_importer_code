@@ -35,32 +35,32 @@ import com.zoho.arattai.core.Message;
 public class VideoMessage extends Message {
 
     /** The filename of the video file as stored inside the export ZIP. */
-    public final String name;
+    private final String name;
 
     /** The uncompressed file size of the video in bytes. */
-    public final int size;
+    private final int size;
 
     /**
      * The playback duration of the video, formatted as {@code "m:ss"}
      * (e.g., {@code "2:45"}). Defaults to {@code "0:00"} when extraction fails.
      */
-    public final String duration;
+    private final String duration;
 
     /**
      * The lowercase file extension identifying the video container format
      * (e.g., {@code "mp4"}, {@code "mkv"}).
      */
-    public final String type;
+    private final String type;
 
     /**
      * The horizontal resolution of the video in pixels, or {@code 0} if unknown.
      */
-    public final int width;
+    private final int width;
 
     /**
      * The vertical resolution of the video in pixels, or {@code 0} if unknown.
      */
-    public final int height;
+    private final int height;
 
     /**
      * Constructs a new {@code VideoMessage} with all metadata provided by the

@@ -34,22 +34,22 @@ import com.zoho.arattai.core.Message;
 public class ImageMessage extends Message {
 
     /** The filename of the image as stored inside the export ZIP. */
-    public final String name;
+    private final String name;
 
     /** The vertical dimension of the image in pixels, or {@code 0} if unknown. */
-    public final int height;
+    private final int height;
 
     /** The horizontal dimension of the image in pixels, or {@code 0} if unknown. */
-    public final int width;
+    private final int width;
 
     /** The uncompressed file size of the image in bytes. */
-    public final int size;
+    private final int size;
 
     /**
      * The lowercase file extension that identifies the image format
      * (e.g., {@code "jpg"}, {@code "png"}, {@code "webp"}).
      */
-    public final String type;
+    private final String type;
 
     /**
      * Constructs a new {@code ImageMessage} with all metadata provided by the

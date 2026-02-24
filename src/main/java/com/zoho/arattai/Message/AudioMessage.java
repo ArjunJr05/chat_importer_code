@@ -40,22 +40,22 @@ import com.zoho.arattai.core.Message;
 public class AudioMessage extends Message {
 
     /** The filename of the audio file as stored inside the export ZIP. */
-    public final String name;
+    private final String name;
 
     /** The uncompressed file size of the audio in bytes. */
-    public final int size;
+    private final int size;
 
     /**
      * The playback duration of the audio clip, formatted as {@code "m:ss"}
      * (e.g., {@code "0:05"}). Defaults to {@code "0:00"} when extraction fails.
      */
-    public final String duration;
+    private final String duration;
 
     /**
      * The lowercase file extension identifying the audio format
      * (e.g., {@code "opus"}, {@code "mp3"}).
      */
-    public final String type;
+    private final String type;
 
     /**
      * Constructs a new {@code AudioMessage} with all metadata provided by the

@@ -22,7 +22,7 @@ import com.zoho.arattai.core.Message.MessageType;
  * System.out.println("Chat: " + export.getChatName());
  *
  * for (Message msg : export.getAllMessages()) {
- *     System.out.println(msg.sender + " : " + msg.messageType);
+ *     System.out.println(msg.getSender() + " : " + msg.getMessageType());
  * }
  * }</pre>
  *
@@ -39,13 +39,13 @@ public class WhatsAppExport {
      * The prefix {@code "WhatsApp Chat with "} and the {@code .zip} extension
      * are stripped automatically by the parser.
      */
-    public final String chatName;
+    private final String chatName;
 
     /**
      * All messages in chronological order exactly as they appear
      * in the WhatsApp transcript file.
      */
-    public List<Message> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     /**
      * @param chatName the display name of this chat

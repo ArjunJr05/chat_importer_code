@@ -8,17 +8,17 @@ public class Message {
     /**
      * The display name of the participant who sent this message.
      */
-    public String sender;
+    private String sender;
 
     /**
      * The date and time at which this message was sent.
      */
-    public java.util.Date timestamp;
+    private java.util.Date timestamp;
 
     /**
      * The category of this message.
      */
-    public MessageType messageType;
+    private MessageType messageType;
 
     /**
      * @param sender      the display name of the message sender
@@ -29,6 +29,33 @@ public class Message {
         this.sender = sender;
         this.timestamp = timestamp;
         this.messageType = messageType;
+    }
+
+    /**
+     * Returns the name of the participant who sent this message.
+     * 
+     * @return the sender's display name
+     */
+    public String getSender() {
+        return sender;
+    }
+
+    /**
+     * Returns the date and time the message was sent.
+     * 
+     * @return the timestamp
+     */
+    public java.util.Date getTimestamp() {
+        return timestamp;
+    }
+
+    /**
+     * Returns the classification type of this message.
+     * 
+     * @return the message type
+     */
+    public MessageType getMessageType() {
+        return messageType;
     }
 
     /**

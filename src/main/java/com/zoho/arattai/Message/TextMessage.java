@@ -33,7 +33,7 @@ public class TextMessage extends Message {
      * The raw text content of the message exactly as it appears in
      * the WhatsApp transcript (including emoji and special characters).
      */
-    public final String text;
+    private final String text;
 
     /**
      * Constructs a new {@code TextMessage}.

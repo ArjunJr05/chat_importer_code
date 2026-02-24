@@ -123,11 +123,11 @@ public class WhatsAppChatParser {
                 return new TextMessage(content, sender, timestamp, MessageType.TEXT);
             case IMAGE: {
                 MediaEntry info = findMedia(content, mediaFiles, "image");
-                String name = info != null ? info.name : "image.jpg";
-                int size = info != null ? (int) info.size : 0, w = 0, h = 0;
+                String name = info != null ? info.getName() : "image.jpg";
+                int size = info != null ? (int) info.getSize() : 0, w = 0, h = 0;
                 if (info != null) {
                     try {
-                        ZipEntry ze = zipFile.getEntry(info.name);
+                        ZipEntry ze = zipFile.getEntry(info.getName());
                         if (ze != null) {
                             BufferedImage img = ImageIO.read(zipFile.getInputStream(ze));
                             if (img != null) {
@@ -142,12 +142,12 @@ public class WhatsAppChatParser {
             }
             case VIDEO: {
                 MediaEntry info = findMedia(content, mediaFiles, "video");
-                String name = info != null ? info.name : "video.mp4";
-                int size = info != null ? (int) info.size : 0, vw = 0, vh = 0;
+                String name = info != null ? info.getName() : "video.mp4";
+                int size = info != null ? (int) info.getSize() : 0, vw = 0, vh = 0;
                 String dur = "0:00";
                 if (info != null) {
                     try {
-                        ZipEntry ze = zipFile.getEntry(info.name);
+                        ZipEntry ze = zipFile.getEntry(info.getName());
                         if (ze != null) {
                             File tmp = extractToTemp(zipFile, ze, "video", extension(name));
                             dur = parseMp4Duration(tmp);
@@ -163,12 +163,12 @@ public class WhatsAppChatParser {
             }
             case AUDIO: {
                 MediaEntry info = findMedia(content, mediaFiles, "audio");
-                String name = info != null ? info.name : "audio.opus";
-                int size = info != null ? (int) info.size : 0;
+                String name = info != null ? info.getName() : "audio.opus";
+                int size = info != null ? (int) info.getSize() : 0;
                 String dur = "0:00";
                 if (info != null) {
                     try {
-                        ZipEntry ze = zipFile.getEntry(info.name);
+                        ZipEntry ze = zipFile.getEntry(info.getName());
                         if (ze != null) {
                             String ext = extension(name);
                             File tmp = extractToTemp(zipFile, ze, "audio", ext);
@@ -193,14 +193,14 @@ public class WhatsAppChatParser {
             }
             case DOCUMENT: {
                 MediaEntry info = findMedia(content, mediaFiles, "document");
-                String name = info != null ? info.name : "document.pdf";
-                int size = info != null ? (int) info.size : 0;
+                String name = info != null ? info.getName() : "document.pdf";
+                int size = info != null ? (int) info.getSize() : 0;
                 return new DocumentMessage(name, extension(name), size, sender, timestamp, MessageType.DOCUMENT);
             }
             case STICKER: {
                 MediaEntry info = findMedia(content, mediaFiles, "sticker");
-                String name = info != null ? info.name : "sticker.webp";
-                int size = info != null ? (int) info.size : 0;
+                String name = info != null ? info.getName() : "sticker.webp";
+                int size = info != null ? (int) info.getSize() : 0;
                 return new StickerMessage(name, size, extension(name), sender, timestamp, MessageType.STICKER);
             }
             default:
@@ -452,9 +452,9 @@ public class WhatsAppChatParser {
      */
     public static class MediaEntry {
         /** Filename of the media entry. */
-        public final String name;
+        private final String name;
         /** Byte size of the media entry. */
-        public final long size;
+        private final long size;
 
         /**
          * @param n filename of the media entry
@@ -463,6 +463,14 @@ public class WhatsAppChatParser {
         MediaEntry(String n, long s) {
             name = n;
             size = s;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public long getSize() {
+            return size;
         }
     }
 }

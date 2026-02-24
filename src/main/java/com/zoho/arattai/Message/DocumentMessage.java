@@ -30,16 +30,16 @@ import com.zoho.arattai.core.Message;
 public class DocumentMessage extends Message {
 
     /** The filename of the document as stored inside the export ZIP. */
-    public final String name;
+    private final String name;
 
     /**
      * The lowercase file extension identifying the document format
      * (e.g., {@code "pdf"}, {@code "docx"}, {@code "zip"}).
      */
-    public final String type;
+    private final String type;
 
     /** The uncompressed file size of the document in bytes. */
-    public final int size;
+    private final int size;
 
     /**
      * Constructs a new {@code DocumentMessage} with all metadata provided by the
