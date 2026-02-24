@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.zoho.arattai"},{"l":"com.zoho.arattai.core"},{"l":"com.zoho.arattai.Message"}];updateSearchResults();
