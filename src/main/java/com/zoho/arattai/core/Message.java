@@ -3,7 +3,7 @@ package com.zoho.arattai.core;
 /**
  * Abstract base class for all message types in the WhatsApp chat parser system.
  */
-public class Message {
+public abstract class Message {
 
     /**
      * The display name of the participant who sent this message.
