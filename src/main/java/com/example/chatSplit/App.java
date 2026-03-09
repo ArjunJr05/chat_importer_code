@@ -1,14 +1,14 @@
-package com.zoho.arattai;
+package com.example.chatSplit;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 
-import com.zoho.arattai.Message.*;
-import com.zoho.arattai.core.WhatsAppChatParser;
-import com.zoho.arattai.core.Message;
-import com.zoho.arattai.core.WhatsAppExport;
+import com.example.chatSplit.Message.*;
+import com.example.chatSplit.core.WhatsAppChatParser;
+import com.example.chatSplit.core.Message;
+import com.example.chatSplit.core.WhatsAppExport;
 
 /**
  * Command-line entry point for the WhatsApp Chat Parser application.
@@ -213,3 +213,6 @@ public class App {
         return DISPLAY_FORMAT.format(d);
     }
 }
+
+
+

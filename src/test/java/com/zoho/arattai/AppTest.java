@@ -1,4 +1,4 @@
-package com.zoho.arattai;
+package com.example.chatSplit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,3 +17,5 @@ public class AppTest {
         assertTrue(true);
     }
 }
+
+

@@ -1,16 +1,16 @@
-package com.zoho.arattai.core;
+package com.example.chatSplit.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zoho.arattai.core.Message.Type;
+import com.example.chatSplit.core.Message.Type;
 
 /**
  * Immutable container for a fully-parsed WhatsApp chat export.
  *
  * <p>
  * A {@code WhatsAppExport} instance is created by
- * {@link com.zoho.arattai.core.WhatsAppChatParser#parse(String)} after it has
+ * {@link com.example.chatSplit.core.WhatsAppChatParser#parse(String)} after it has
  * read the export ZIP, discovered the chat transcript, and converted every line
  * into a typed {@link Message} subclass. Callers obtain the data through the
  * typed accessor methods below rather than by inspecting the raw message list.
@@ -28,7 +28,7 @@ import com.zoho.arattai.core.Message.Type;
  *
  * @author Zoho Arattai
  * @version 1.0
- * @see com.zoho.arattai.core.WhatsAppChatParser
+ * @see com.example.chatSplit.core.WhatsAppChatParser
  * @see Message
  * @see Type
  */
@@ -74,3 +74,6 @@ public class WhatsAppExport {
         return chatName;
     }
 }
+
+
+

@@ -1,7 +1,7 @@
-package com.zoho.arattai.Message;
+package com.example.chatSplit.Message;
 
-import com.zoho.arattai.core.Message.Type;
-import com.zoho.arattai.core.Message;
+import com.example.chatSplit.core.Message.Type;
+import com.example.chatSplit.core.Message;
 
 /**
  * Represents an animated WebP sticker message parsed from a WhatsApp chat
@@ -100,3 +100,6 @@ public class StickerMessage extends Message {
         return extension;
     }
 }
+
+
+

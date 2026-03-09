@@ -1,7 +1,7 @@
-package com.zoho.arattai.Message;
+package com.example.chatSplit.Message;
 
-import com.zoho.arattai.core.Message.Type;
-import com.zoho.arattai.core.Message;
+import com.example.chatSplit.core.Message.Type;
+import com.example.chatSplit.core.Message;
 
 /**
  * Represents a plain-text message parsed from a WhatsApp chat export.
@@ -60,3 +60,6 @@ public class TextMessage extends Message {
     }
 
 }
+
+
+

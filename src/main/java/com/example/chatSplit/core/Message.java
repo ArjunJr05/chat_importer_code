@@ -1,4 +1,4 @@
-package com.zoho.arattai.core;
+package com.example.chatSplit.core;
 
 /**
  * Abstract base class for all message types in the WhatsApp chat parser system.
@@ -76,3 +76,6 @@ public abstract class Message {
         STICKER
     }
 }
+
+
+

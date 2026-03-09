@@ -1,7 +1,7 @@
-package com.zoho.arattai.Message;
+package com.example.chatSplit.Message;
 
-import com.zoho.arattai.core.Message.Type;
-import com.zoho.arattai.core.Message;
+import com.example.chatSplit.core.Message.Type;
+import com.example.chatSplit.core.Message;
 
 /**
  * Represents a generic file attachment message parsed from a WhatsApp chat
@@ -91,3 +91,6 @@ public class DocumentMessage extends Message {
         return size;
     }
 }
+
+
+

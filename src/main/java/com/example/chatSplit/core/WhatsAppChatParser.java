@@ -1,4 +1,4 @@
-package com.zoho.arattai.core;
+package com.example.chatSplit.core;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
-import com.zoho.arattai.Message.*;
-import com.zoho.arattai.core.Message.Type;
+import com.example.chatSplit.Message.*;
+import com.example.chatSplit.core.Message.Type;
 
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
@@ -480,3 +480,6 @@ public class WhatsAppChatParser {
         }
     }
 }
+
+
+

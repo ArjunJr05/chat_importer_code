@@ -1,7 +1,7 @@
-package com.zoho.arattai.Message;
+package com.example.chatSplit.Message;
 
-import com.zoho.arattai.core.Message.Type;
-import com.zoho.arattai.core.Message;
+import com.example.chatSplit.core.Message.Type;
+import com.example.chatSplit.core.Message;
 
 /**
  * Represents a voice note or audio file attachment parsed from a WhatsApp chat
@@ -120,3 +120,6 @@ public class AudioMessage extends Message {
         return extension;
     }
 }
+
+
+
