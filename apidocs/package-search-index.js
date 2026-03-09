@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.example.chatSplit"},{"l":"com.example.chatSplit.core"},{"l":"com.example.chatSplit.Message"}];updateSearchResults();
